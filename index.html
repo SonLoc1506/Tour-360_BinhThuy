@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>360 Viewer with Hotspots</title>
-    <script type="text/javascript" src="pannellum.js"></script>
-    <link rel="stylesheet" type="text/css" href="pannellum.css">
-    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="pannellum/pannellum.js"></script>
+    <link rel="stylesheet" type="text/css" href="pannellum/pannellum.css">
+    <link rel="stylesheet" href="pannellum/style.css">
 </head>
 <body>
     <h1>360° Viewer with Hotspots</h1>
@@ -53,7 +53,7 @@
             scenes: {
                 "scene1": {
                     type: "equirectangular",
-                    panorama: "pexels-cedric-154796270-12917266.jpg",
+                    panorama: "pannellum/image/pexels-cedric-154796270-12917266.jpg",
                     hotSpots: [
                         {
                             pitch: 0,
@@ -62,7 +62,7 @@
                             cssClass: "custom-hotspot",
                             createTooltipFunc: hotspotCustom,
                             createTooltipArgs: {
-                                imageSrc: "./image/Arrow_Top.png" // 🔺 Đường dẫn đến ảnh custom
+                                imageSrc: "pannellum/image/Arrow_Top.png"
                             },
                             clickHandlerFunc: function() {
                                 viewer.loadScene("scene2");
@@ -81,7 +81,7 @@
                 },
                 "scene2": {
                     type: "equirectangular",
-                    panorama: "pexels-joshsorenson-1253057.jpg",
+                    panorama: "pannellum/image/pexels-joshsorenson-1253057.jpg", // Fixed path
                     hotSpots: [
                     {
                         pitch: 0,
@@ -90,7 +90,7 @@
                         cssClass: "custom-hotspot",
                         createTooltipFunc: hotspotCustom,
                         createTooltipArgs: {
-                            imageSrc: "point2.png" // 🔺 Đường dẫn đến ảnh custom
+                            imageSrc: "pannellum/image/point2.png" // Fixed path
                         },
                         clickHandlerFunc: function() {
                             viewer.loadScene("scene1");
@@ -106,7 +106,7 @@
             const modal = document.getElementById("modelModal");
             const iframe = document.getElementById("sketchfabIframe");
             iframe.src = url;
-            modal.style.display = "flex"; // Hiển thị modal
+            modal.style.display = "flex";
         }
 
         // ✅ Hàm đóng modal
@@ -114,7 +114,7 @@
             const modal = document.getElementById("modelModal");
             const iframe = document.getElementById("sketchfabIframe");
             modal.style.display = "none";
-            iframe.src = ""; // Reset iframe để dừng Sketchfab
+            iframe.src = "";
         }
 
         // ✅ Đóng modal khi nhấn ra ngoài
@@ -124,15 +124,12 @@
                 closeModal();
             }
         }
+
         function hotspotCustom(hotSpotDiv, args) {
             let img = document.createElement("img");
-            img.src = args.imageSrc; // Ảnh của hotspot
+            img.src = args.imageSrc;
             img.classList.add("hotspot-icon");
-        
-
-        
             hotSpotDiv.appendChild(img);
-
         }
     </script>
 </body>

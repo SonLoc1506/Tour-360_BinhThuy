@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360 Viewer with Hotspots</title>
+    <script type="text/javascript" src="pannellum.js"></script>
+    <link rel="stylesheet" type="text/css" href="pannellum.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>360° Viewer with Hotspots</h1>
+    <div id="panorama"></div>
+
+    <!-- ✅ Modal hiển thị mô hình Sketchfab -->
+    <div id="modelModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <iframe id="sketchfabIframe" class="modal-content" allowfullscreen></iframe>
+        <div class="box-info">
+            <div class="modal-header">
+                Thông tin chi tiết
+            </div>
+            <table>
+                <tr>
+                    <th>Thông tin</th>
+                    <th>Giá trị</th>
+                </tr>
+                <tr>
+                    <td>Họ và tên</td>
+                    <td>Nguyễn Văn A</td>
+                </tr>
+                <tr>
+                    <td>Tuổi</td>
+                    <td>25</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>nguyenvana@gmail.com</td>
+                </tr>
+                <tr>
+                    <td>Địa chỉ</td>
+                    <td>Hà Nội, Việt Nam</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        const viewer = pannellum.viewer('panorama', {
+            default: {
+                firstScene: "scene1",
+                autoLoad: true
+            },
+            scenes: {
+                "scene1": {
+                    type: "equirectangular",
+                    panorama: "pexels-cedric-154796270-12917266.jpg",
+                    hotSpots: [
+                        {
+                            pitch: 0,
+                            yaw: 0,
+                            type: "custom",
+                            cssClass: "custom-hotspot",
+                            createTooltipFunc: hotspotCustom,
+                            createTooltipArgs: {
+                                imageSrc: "./image/Arrow_Top.png" // 🔺 Đường dẫn đến ảnh custom
+                            },
+                            clickHandlerFunc: function() {
+                                viewer.loadScene("scene2");
+                            }
+                        },
+                        {
+                            pitch: 10,
+                            yaw: 20,
+                            type: "info",
+                            text: "Xem mô hình 3D",
+                            clickHandlerFunc: function() {
+                                openModal("https://sketchfab.com/models/2882a004501d49a4a3df7c0bd1516323/embed");
+                            }
+                        }
+                    ]
+                },
+                "scene2": {
+                    type: "equirectangular",
+                    panorama: "pexels-joshsorenson-1253057.jpg",
+                    hotSpots: [
+                    {
+                        pitch: 0,
+                        yaw: 0,
+                        type: "custom",
+                        cssClass: "custom-hotspot",
+                        createTooltipFunc: hotspotCustom,
+                        createTooltipArgs: {
+                            imageSrc: "point2.png" // 🔺 Đường dẫn đến ảnh custom
+                        },
+                        clickHandlerFunc: function() {
+                            viewer.loadScene("scene1");
+                        }
+                    }
+                    ]
+                }
+            }
+        });
+
+        // ✅ Hàm mở modal
+        function openModal(url) {
+            const modal = document.getElementById("modelModal");
+            const iframe = document.getElementById("sketchfabIframe");
+            iframe.src = url;
+            modal.style.display = "flex"; // Hiển thị modal
+        }
+
+        // ✅ Hàm đóng modal
+        function closeModal() {
+            const modal = document.getElementById("modelModal");
+            const iframe = document.getElementById("sketchfabIframe");
+            modal.style.display = "none";
+            iframe.src = ""; // Reset iframe để dừng Sketchfab
+        }
+
+        // ✅ Đóng modal khi nhấn ra ngoài
+        window.onclick = function(event) {
+            const modal = document.getElementById("modelModal");
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+        function hotspotCustom(hotSpotDiv, args) {
+            let img = document.createElement("img");
+            img.src = args.imageSrc; // Ảnh của hotspot
+            img.classList.add("hotspot-icon");
+        
+
+        
+            hotSpotDiv.appendChild(img);
+
+        }
+    </script>
+</body>
+</html>
